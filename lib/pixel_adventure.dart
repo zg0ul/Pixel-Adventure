@@ -4,8 +4,8 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:pixel_adventure/actors/player.dart';
-import 'package:pixel_adventure/levels/level.dart';
+import 'package:pixel_adventure/components/player.dart';
+import 'package:pixel_adventure/components/level.dart';
 
 class PixelAdventure extends FlameGame
     with HasKeyboardHandlerComponents, DragCallbacks {
@@ -20,7 +20,7 @@ class PixelAdventure extends FlameGame
 
   // add a joystick component which needs a DragCallbacks mixin
   late JoystickComponent joystick;
-  bool showJoystick = false;
+  bool showJoystick = false; // if true we cannot use keyboard controls only the joystick.
 
   @override
   FutureOr<void> onLoad() async {
@@ -31,7 +31,7 @@ class PixelAdventure extends FlameGame
     // the creating of the level must be in the onLoad method because we need to wait for the images to load first (the players sprites)
     final world = Level(
       player: player,
-      levelName: 'Level-02',
+      levelName: 'Level-01',
     );
 
     // create a camera with a fixed resolution (so that the game looks the same on all devices)
@@ -83,15 +83,15 @@ class PixelAdventure extends FlameGame
       case JoystickDirection.left:
       case JoystickDirection.upLeft:
       case JoystickDirection.downLeft:
-        player.playerDirection = PlayerDirection.left;
+        player.horizontalMovement = -1;
         break;
       case JoystickDirection.right:
       case JoystickDirection.upRight:
       case JoystickDirection.downRight:
-        player.playerDirection = PlayerDirection.right;
+        player.horizontalMovement = 1;
         break;
       default:
-        player.playerDirection = PlayerDirection.none;
+        player.horizontalMovement = 0;
         break;
     }
   }
